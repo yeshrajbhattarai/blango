@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+
+{% block content %}
+
+<h2>{{ post.title }}</h2>
+
+<div class="row">
+    <div class="col">
+        <small>
+            By {{ post.author|author_details:request.user }}
+            on {{ post.published_at|date:"M, d Y" }}
+        </small>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col">
+        {{ post.content|safe }}
+    </div>
+</div>
+
+<hr>
+
+{% include "blog/post-comments.html" %}
+
+{% endblock %}

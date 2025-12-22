@@ -1,28 +1,26 @@
 {% extends "base.html" %}
 {% load blog_extras %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% block content %}
-    <h2>Blog Posts</h2>
-    {% for post in posts %}
+
+{% block content %}
+<h2>Blog Posts</h2>
+
+{% for post in posts %}
     <div class="row">
+        <hr>
         <div class="col">
             <h3>{{ post.title }}</h3>
-            <small>By {{ post.author|author_details:request.user }} on {{ post.published_at|date:"M, d Y" }}</small>
+            <small>
+                By {{ post.author|author_details:request.user }}
+                on {{ post.published_at|date:"M, d Y" }}
+            </small>
             <p>{{ post.summary }}</p>
             <p>
                 ({{ post.content|wordcount }} words)
-                <a href="#">Read More</a>
+                <a href="{% url 'blog-post-detail' post.slug %}">Read More</a>
             </p>
         </div>
+        <hr>
     </div>
-    {% endfor %}
+{% endfor %}
+
 {% endblock %}
-</body>
-</html>
