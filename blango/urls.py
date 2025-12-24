@@ -20,3 +20,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("blog.urls")),
 ]
+
+from django.conf import settings
+print(f"Time zone: {settings.TIME_ZONE}")
