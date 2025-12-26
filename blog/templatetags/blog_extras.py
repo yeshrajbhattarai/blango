@@ -1,16 +1,17 @@
 from django import template
 from django.contrib.auth import get_user_model
 from django.utils.html import format_html
-
-user_model = get_user_model()
+from blog.models import Post
+import logging
 
 register = template.Library()
-user_model = get_user_model()
+User = get_user_model()
+
+logger = logging.getLogger(__name__)
 
 @register.filter
 def author_details(author, current_user=None):
-    if not isinstance(author, user_model):
-        # return empty string as safe default
+    if not isinstance(author, User):
         return ""
 
     if author == current_user:
@@ -19,13 +20,29 @@ def author_details(author, current_user=None):
     if author.first_name and author.last_name:
         name = f"{author.first_name} {author.last_name}"
     else:
-        name = f"{author.username}"
+        name = author.username
 
     if author.email:
-        prefix = format_html('<a href="mailto:{}">', author.email)
-        suffix = format_html("</a>")
-    else:
-        prefix = ""
-        suffix = ""
+        return format_html(
+            '<a href="mailto:{}">{}</a>',
+            author.email,
+            name
+        )
 
-    return format_html('{}{}{}', prefix, name, suffix)
+    return format_html("{}", name)
+
+
+@register.inclusion_tag("blog/recent-posts.html")
+def recent_posts(current_post, limit=5):
+    posts = (
+        Post.objects
+        .exclude(pk=current_post.pk)
+        .order_by("-published_at")[:limit]
+    )
+    logger.debug(
+        "Loaded %d recent posts for post %d",
+        len(posts),
+        current_post.pk
+    )
+    return {"recent_posts": posts}
+
