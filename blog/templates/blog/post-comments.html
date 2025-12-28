@@ -1,36 +1,35 @@
 {% load blog_extras %}
 {% load crispy_forms_tags %}
 
-<h4>Comments</h4>
+<h3 class="mb-4">Comments <span class="badge bg-secondary">{{ post.comments.count }}</span></h3>
 
-{% for comment in post.comments.all %}
-    <div class="row border-top pt-2">
-        <div class="col">
-            <h5>
-                Posted by {{ comment.creator }}
-                at {{ comment.created_at|date:"M, d Y h:i" }}
-            </h5>
+<div class="list-group mb-4">
+    {% for comment in post.comments.all %}
+        <div class="list-group-item list-group-item-action flex-column align-items-start p-3">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ comment.creator }}</h5>
+                <small class="text-muted">{{ comment.created_at|date:"M d, Y h:i A" }}</small>
+            </div>
+            <p class="mb-1 mt-2">{{ comment.content }}</p>
         </div>
-    </div>
-
-    <div class="row border-bottom">
-        <div class="col">
-            <p>{{ comment.content }}</p>
+    {% empty %}
+        <div class="alert alert-info text-center">
+            No comments yet. Be the first to say something!
         </div>
-    </div>
-{% empty %}
-    <div class="row border-top border-bottom">
-        <div class="col">
-            <p>No comments.</p>
-        </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+</div>
 
 {% if request.user.is_active %}
-    <div class="row mt-4">
-        <div class="col">
-            <h4>Add Comment</h4>
-            {%  crispy comment_form %}
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            Add a Comment
         </div>
+        <div class="card-body">
+            {% crispy comment_form %}
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        Please <a href="{% url 'login' %}">log in</a> to leave a comment.
     </div>
 {% endif %}

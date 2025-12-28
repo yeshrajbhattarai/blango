@@ -1,0 +1,5 @@
+Hi,
+Please activate your account here:
+{{ scheme }}://{{ request.get_host }}{% url "django_registration_activate" activation_key %}
+
+Thanks!

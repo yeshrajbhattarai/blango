@@ -2,25 +2,33 @@
 {% load blog_extras %}
 
 {% block content %}
-<h2>Blog Posts</h2>
-
-{% for post in posts %}
-    <div class="row">
-        <hr>
-        <div class="col">
-            <h3>{{ post.title }}</h3>
-            <small>
-                By {{ post.author|author_details:request.user }}
-                on {{ post.published_at|date:"M, d Y" }}
-            </small>
-            <p>{{ post.summary }}</p>
-            <p>
-                ({{ post.content|wordcount }} words)
-                <a href="{% url 'blog-post-detail' post.slug %}">Read More</a>
-            </p>
-        </div>
-        <hr>
+<div class="row">
+    <div class="col-12 my-4">
+        <h2 class="mb-4">Latest Blog Posts</h2>
     </div>
-{% endfor %}
+</div>
 
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        {% for post in posts %}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title">{{ post.title }}</h2>
+                    
+                    <h6 class="card-subtitle mb-3 text-muted">
+                        By {{ post.author|author_details:request.user }} 
+                        on {{ post.published_at|date:"M d, Y" }}
+                    </h6>
+                    
+                    <p class="card-text">{{ post.summary }}</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <small class="text-muted">({{ post.content|wordcount }} words)</small>
+                        <a href="{% url 'blog-post-detail' post.slug %}" class="btn btn-outline-primary btn-sm">Read More &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

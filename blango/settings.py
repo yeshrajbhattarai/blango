@@ -182,6 +182,11 @@ class Dev(Configuration):
         "level": "DEBUG",
     },
     }
+    # Prints emails to the console for nw
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+    # How many days the user has to click the link before it expires
+    ACCOUNT_ACTIVATION_DAYS = 7
 #_______________________________________________________________________________________
 class Prod(Dev):
     DEBUG = False

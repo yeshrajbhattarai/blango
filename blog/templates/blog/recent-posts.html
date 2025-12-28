@@ -1,13 +1,14 @@
-<h3>Recent Posts</h3>
-
-<ul>
-    {% for post in recent_posts %}
-        <li>
-            <a href="{{ post.get_absolute_url }}">
+<div class="card mb-4">
+    <div class="card-header">
+        Recent Posts
+    </div>
+    <div class="list-group list-group-flush">
+        {% for post in recent_posts %}
+            <a href="{{ post.get_absolute_url }}" class="list-group-item list-group-item-action">
                 {{ post.title }}
             </a>
-        </li>
-    {% empty %}
-        <li>No recent posts available</li>
-    {% endfor %}
-</ul>
+        {% empty %}
+            <span class="list-group-item">No recent posts available</span>
+        {% endfor %}
+    </div>
+</div>
