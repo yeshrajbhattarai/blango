@@ -28,4 +28,14 @@
 
 {% include "blog/post-comments.html" %}
 
+{% if post.author.profile %}
+<hr>
+<div class="row mt-4">
+    <div class="col">
+        <h4>About the author</h4>
+        <p>{{ post.author.profile.bio }}</p>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}

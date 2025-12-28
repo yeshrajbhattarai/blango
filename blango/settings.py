@@ -52,11 +52,13 @@ class Dev(Configuration):
         "django.contrib.sessions",
         "django.contrib.messages",
         "django.contrib.staticfiles",
+        "blango_auth",
         "blog",
         "crispy_forms",
         "crispy_bootstrap5",
     ]
-
+    #This is the authentication model fro users (seperate app)
+    AUTH_USER_MODEL = "blango_auth.User"
     MIDDLEWARE = [
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
