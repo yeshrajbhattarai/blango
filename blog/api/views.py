@@ -1,0 +1,1 @@
+from blog.api.permissions import AuthorModifyOrReadOnly, IsAdminUserForObject

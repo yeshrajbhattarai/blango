@@ -14,6 +14,7 @@ from configurations import values
 import os
 from pathlib import Path
 from configurations import Configuration
+from rest_framework import permissions
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -105,7 +106,6 @@ class Dev(Configuration):
 
 
     # Database
-    # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
     DATABASES = values.DatabaseURLValue(
     f"sqlite:///{BASE_DIR}/db.sqlite3"
@@ -114,7 +114,6 @@ class Dev(Configuration):
 
 
     # Password validation
-    # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
     AUTH_PASSWORD_VALIDATORS = [
         {
@@ -133,7 +132,6 @@ class Dev(Configuration):
 
 
     # Internationalization
-    # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
     LANGUAGE_CODE = 'en-us'
 
@@ -146,13 +144,12 @@ class Dev(Configuration):
     USE_TZ = True
 
 
+
     # Static files (CSS, JavaScript, Images)
-    # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
     STATIC_URL = '/static/'
 
     # Default primary key field type
-    # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -196,11 +193,25 @@ class Dev(Configuration):
         "level": "DEBUG",
     },
     }
-    # Prints emails to the console for nw
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-    # How many days the user has to click the link before it expires
+    # Time limit
     ACCOUNT_ACTIVATION_DAYS = 7
+
+    REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly"
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+}
 #_______________________________________________________________________________________
 class Prod(Dev):
     DEBUG = False
